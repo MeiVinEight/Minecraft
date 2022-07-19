@@ -13,7 +13,7 @@ public class NetworkManager
 	private final Socket connection;
 	private final InputStream I;
 	private final OutputStream O;
-	private int state;
+	public int state;
 	private boolean compress;
 	private int threshold;
 
