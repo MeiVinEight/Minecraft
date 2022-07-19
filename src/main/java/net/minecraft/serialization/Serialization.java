@@ -28,11 +28,52 @@ public class Serialization
 		read(in, buf, 0, buf.length);
 	}
 
-	public static int read(InputStream in) throws IOException
+	public static short readShort(InputStream in) throws IOException
 	{
-		byte[] buf = new byte[1];
-		read(in, buf, 0, 1);
-		return buf[0] & 0xFF;
+		byte[] buf = new byte[2];
+		read(in, buf);
+		short ret = 0;
+		ret |= (buf[0] & 0xFF) << 8;
+		ret |= (buf[1] & 0xFF) << 0;
+		return ret;
+	}
+
+	public static int readUnsignedShort(InputStream in) throws IOException
+	{
+		return readShort(in) & 0xFFFF;
+	}
+
+	public static int readInt(InputStream in) throws IOException
+	{
+		byte[] buf = new byte[4];
+		read(in, buf);
+		int ret = 0;
+		ret |= (buf[0] & 0xFF) << 24;
+		ret |= (buf[1] & 0XFF) << 16;
+		ret |= (buf[2] & 0xFF) << 8;
+		ret |= (buf[3] & 0xFF) << 0;
+		return ret;
+	}
+
+	public static long readUnsignedInt(InputStream in) throws IOException
+	{
+		return ((long)readInt(in)) & 0xFFFFFFFFL;
+	}
+
+	public static long readLong(InputStream in) throws IOException
+	{
+		byte[] buf = new byte[8];
+		read(in, buf);
+		long ret = 0;
+		ret |= (buf[0] & 0xFFL) << 56;
+		ret |= (buf[1] & 0xFFL) << 48;
+		ret |= (buf[2] & 0xFFL) << 40;
+		ret |= (buf[3] & 0xFFL) << 32;
+		ret |= (buf[4] & 0xFFL) << 24;
+		ret |= (buf[5] & 0xFFL) << 16;
+		ret |= (buf[6] & 0xFFL) << 8;
+		ret |= (buf[7] & 0xFFL) << 0;
+		return ret;
 	}
 
 	public static int readVarInt(InputStream in) throws IOException
@@ -47,7 +88,7 @@ public class Serialization
 				throw new IOException("VarInt is too big");
 			}
 
-			current = Serialization.read(in);
+			current = in.read();
 			ret |= (current & 0x7F) << (7 * i++);
 		}
 		while (current >>> 7 != 0);
@@ -66,7 +107,7 @@ public class Serialization
 				throw new IOException("VarInt is too big");
 			}
 
-			current = Serialization.read(in);
+			current = in.read();
 			ret |= (current & 0x7F) << (7 * i++);
 		}
 		while (current >>> 7 != 0);
@@ -79,6 +120,48 @@ public class Serialization
 		byte[] b = new byte[len];
 		Serialization.read(in, b);
 		return new String(b, StandardCharsets.UTF_8);
+	}
+
+	public static void write(OutputStream out, byte[] buf, int offset, int length) throws IOException
+	{
+		out.write(buf, offset, length);
+	}
+
+	public static void write(OutputStream out, byte[] buf) throws IOException
+	{
+		write(out, buf, 0, buf.length);
+	}
+
+	public static void writeShort(OutputStream out, int v) throws IOException
+	{
+		byte[] buf= new byte[2];
+		buf[0] = (byte) (v >> 8);
+		buf[1] = (byte) (v >> 0);
+		write(out, buf);
+	}
+
+	public static void writeInt(OutputStream out, int v) throws IOException
+	{
+		byte[] buf = new byte[4];
+		buf[0] = (byte) (v >> 24);
+		buf[1] = (byte) (v >> 16);
+		buf[2] = (byte) (v >> 8);
+		buf[3] = (byte) (v >> 0);
+		write(out, buf);
+	}
+
+	public static void writeLong(OutputStream out, long v) throws IOException
+	{
+		byte[] buf = new byte[8];
+		buf[0] = (byte) (v >> 56);
+		buf[1] = (byte) (v >> 48);
+		buf[2] = (byte) (v >> 40);
+		buf[3] = (byte) (v >> 32);
+		buf[4] = (byte) (v >> 24);
+		buf[5] = (byte) (v >> 16);
+		buf[6] = (byte) (v >> 8);
+		buf[7] = (byte) (v >> 0);
+		write(out, buf);
 	}
 
 	public static void writeVarInt(OutputStream out, int v) throws IOException

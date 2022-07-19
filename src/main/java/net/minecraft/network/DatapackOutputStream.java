@@ -9,6 +9,21 @@ import java.util.Arrays;
 
 public class DatapackOutputStream extends ByteArrayOutputStream
 {
+	public void writeShort(int v) throws IOException
+	{
+		Serialization.writeShort(this, v);
+	}
+
+	public void writeInt(int v) throws IOException
+	{
+		Serialization.writeInt(this, v);
+	}
+
+	public void writeLong(long v) throws IOException
+	{
+		Serialization.writeLong(this, v);
+	}
+
 	public void writeVarInt(int v) throws IOException
 	{
 		Serialization.writeVarInt(this, v);

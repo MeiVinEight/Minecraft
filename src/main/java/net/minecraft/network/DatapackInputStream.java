@@ -14,6 +14,31 @@ public class DatapackInputStream extends ByteArrayInputStream
 		super(data);
 	}
 
+	public short readShort() throws IOException
+	{
+		return Serialization.readShort(this);
+	}
+
+	public int readUnsignedShort() throws IOException
+	{
+		return Serialization.readUnsignedShort(this);
+	}
+
+	public int readInt() throws IOException
+	{
+		return Serialization.readInt(this);
+	}
+
+	public long readUnsignedInt() throws IOException
+	{
+		return Serialization.readUnsignedInt(this);
+	}
+
+	public long readLong() throws IOException
+	{
+		return Serialization.readLong(this);
+	}
+
 	public int readVarInt() throws IOException
 	{
 		return Serialization.readVarInt(this);
