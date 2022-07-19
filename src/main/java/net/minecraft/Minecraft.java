@@ -19,8 +19,8 @@ public class Minecraft implements Runnable
 	private final Thread primitive;
 	private final ExecutorService service = Executors.newCachedThreadPool(new AsynchronousFactory());
 	private final Queue<MinecraftScheduled> schedule = new LinkedList<>();
-	private final MinecraftSchedule synchronous = new SynchronousSchedule();
-	private final MinecraftSchedule asynchronous = new AsynchronousSchedule();
+	public final MinecraftSchedule synchronous = new SynchronousSchedule();
+	public final MinecraftSchedule asynchronous = new AsynchronousSchedule();
 	private final ReentrantLock lock = new ReentrantLock();
 	private boolean running = false;
 
