@@ -17,7 +17,7 @@ public abstract class Datapack
 
 	public abstract void serialize(DatapackOutputStream out) throws IOException;
 
-	public void consume(NetworkManager network)
+	public void consume(NetworkManager connection) throws Throwable
 	{
 	}
 }
